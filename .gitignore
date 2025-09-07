@@ -1,0 +1,5 @@
+node_modules
+tmp/*
+mydb.*
+package-lock.*
+yarn.lock

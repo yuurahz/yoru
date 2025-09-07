@@ -1,0 +1,49 @@
+{
+  "name": "yoru-telegram-bot",
+  "version": "1.0.0",
+  "description": "Simple & lightweight telegram bot (Base)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon",
+    "pm2": "pm2 start",
+    "prettier": "npx prettier . --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuurahz/yoru.git"
+  },
+  "keywords": [
+    "base-bot-tele",
+    "telegraf",
+    "yoru",
+    "bot-telegram"
+  ],
+  "author": "yuurahz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yuurahz/yoru/issues"
+  },
+  "homepage": "https://github.com/yuurahz/yoru#readme",
+  "dependencies": {
+    "@google/genai": "^1.16.0",
+    "@yoshx/func": "*",
+    "chess.js": "^1.4.0",
+    "module-alias": "^2.2.3",
+    "mongodb": "^6.18.0",
+    "node-cron": "^4.2.1",
+    "node-id3": "^0.2.9",
+    "telegraf": "^4.16.3",
+    "yt-search": "^2.13.1"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.5.3"
+  },
+  "_moduleAliases": {
+    "@src": "src",
+    "@library": "library",
+    "@system": "system"
+  }
+}
