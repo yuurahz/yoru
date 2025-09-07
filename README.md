@@ -1,4 +1,10 @@
-# <div align="center">✨ YORU ✨</div>
+<div align="center">
+    <h1>Yoru</h1>
+    <img
+        src="https://files.catbox.moe/obrip8.jpg"
+        alt="Yoru"
+    />
+</div>
 
 <div align="center">
 
