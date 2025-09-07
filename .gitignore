@@ -3,3 +3,4 @@ tmp/*
 mydb.*
 package-lock.*
 yarn.lock
+.env
