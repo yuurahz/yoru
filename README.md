@@ -156,11 +156,33 @@ module.exports = {
 
 ---
 
+> [!WARNING]
+> Troubleshooting
+
+**Bot not responding:**
+1. Check if the bot token is correct
+2. Verify internet connectivity
+3. Check the logs for error messages
+4. Ensure the bot is not hitting rate limits
+
+**Database connection issues:**
+1. Verify MongoDB URL and credentials
+2. Check if the database server is running
+3. Ensure network connectivity to the database
+4. Check for firewall or security group restrictions
+
+**Plugin not loading:**
+1. Check plugin syntax and structure
+2. Verify all required dependencies are installed
+3. Look for error messages in the console
+4. Ensure the plugin file is in the correct directory
+
+---
+
 #### License
 
 Licensed under the **MIT License**. Free for personal & commercial use.
 
----
 
 <div align="center">
 
