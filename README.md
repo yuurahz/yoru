@@ -22,6 +22,8 @@
 > [!NOTE]
 > **Yoru** is a modern, scalable Telegram bot framework designed for developers who need a robust foundation for building feature-rich bots. Whether you're creating a simple utility bot or a complex multi-service platform, Yoru provides the architecture and tools to scale efficiently.
 
+# Why chose yoru?
+
 - **Free & Open Source** – 100% free, no hidden costs
 - **Modular Architecture** – Plug & Play plugins
 - **Fast & Stable** – Powered by [Telegraf](https://telegraf.js.org/)
@@ -31,7 +33,7 @@
 
 ---
 
-#### Quick Start
+### Quick Start
 
 #### 1. Clone & Install
 
@@ -75,11 +77,11 @@ Edit `.env` as needed:
 
 ---
 
-#### Plugin Development
+### Plugin Development
 
 Yoru uses a plugin system that is easy to extend.
 
-#### Basic Plugin
+### Basic Plugin
 
 ```js
 module.exports = {
@@ -112,7 +114,7 @@ module.exports = {
 };
 ```
 
-#### Event Handler
+### Event Handler
 
 ```js
 module.exports = {
@@ -127,7 +129,7 @@ module.exports = {
 
 ---
 
-#### PM2 Configuration
+### PM2 Configuration
 
 ```js
 module.exports = {
@@ -160,18 +162,21 @@ module.exports = {
 > Troubleshooting
 
 **Bot not responding:**
+
 1. Check if the bot token is correct
 2. Verify internet connectivity
 3. Check the logs for error messages
 4. Ensure the bot is not hitting rate limits
 
 **Database connection issues:**
+
 1. Verify MongoDB URL and credentials
 2. Check if the database server is running
 3. Ensure network connectivity to the database
 4. Check for firewall or security group restrictions
 
 **Plugin not loading:**
+
 1. Check plugin syntax and structure
 2. Verify all required dependencies are installed
 3. Look for error messages in the console
@@ -179,10 +184,9 @@ module.exports = {
 
 ---
 
-#### License
+### License
 
 Licensed under the **MIT License**. Free for personal & commercial use.
-
 
 <div align="center">
 
