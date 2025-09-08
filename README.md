@@ -21,6 +21,7 @@
 ---
 
 > [!NOTE]
+> Why chose yoru?
 - **Free & Open Source** – 100% free, no hidden costs
 - **Modular Architecture** – Plug & Play plugins
 - **Fast & Stable** – Powered by [Telegraf](https://telegraf.js.org/)
