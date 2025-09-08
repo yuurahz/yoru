@@ -20,10 +20,7 @@
 
 ---
 
-#### Features
-
 > [!NOTE]
-
 - **Free & Open Source** – 100% free, no hidden costs
 - **Modular Architecture** – Plug & Play plugins
 - **Fast & Stable** – Powered by [Telegraf](https://telegraf.js.org/)
@@ -147,12 +144,8 @@ module.exports = {
 
 ---
 
-#### Contributing
-
-We welcome contributions!
-
 > [!TIP]
-
+> Contributing
 1. Fork repository
 2. Create feature branch (`git checkout -b feature/new-feature`)
 3. Commit your changes (`git commit -m "Add new feature"`)
