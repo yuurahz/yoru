@@ -6,7 +6,6 @@ const { Color, Plugins } = new Component();
 const { loadPlugins, watchPlugins } = Plugins;
 
 const { Telegraf } = require("telegraf");
-const serialize = require("@system/serialize");
 const { LocalDB, MongoDB } = require("@system/provider");
 
 module.exports = connectTelegram = async () => {

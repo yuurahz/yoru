@@ -1,6 +1,6 @@
 {
   "name": "yoru-telegram-bot",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Simple & lightweight telegram bot (Base)",
   "main": "index.js",
   "scripts": {

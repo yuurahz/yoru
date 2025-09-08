@@ -1,3 +1,8 @@
+/**
+ * Tqto : Kath
+ * Source: https://github.com/nat9h/Katsumi/src/lib/uploader.js
+ */
+
 const axios = require("axios");
 const { fromBuffer } = require("file-type");
 
@@ -400,19 +405,4 @@ class Uploader {
 	}
 }
 
-const uploader = new Uploader();
-
-module.exports = uploader;
-
-const {
-	quax,
-	freeimage,
-	tmpfiles,
-	netorare,
-	pomf2,
-	uguu,
-	catbox,
-	imgBB,
-	pasteBoard,
-	pixHost,
-} = uploader.providers;
+module.exports = new Uploader();
