@@ -14,14 +14,14 @@
 [![Stars](https://img.shields.io/github/stars/yuurahz/yoru?style=for-the-badge)](https://github.com/yuurahz/yoru/stargazers)
 
 <h3>Lightweight & Powerful Telegram Bot</h3>
-<p><em>Built with Telegraf • Powered by Yoshida-APIs • Completely Free</em></p>
 
 </div>
 
 ---
 
 > [!NOTE]
-> Why chose yoru?
+> **Yoru** is a modern, scalable Telegram bot framework designed for developers who need a robust foundation for building feature-rich bots. Whether you're creating a simple utility bot or a complex multi-service platform, Yoru provides the architecture and tools to scale efficiently.
+
 - **Free & Open Source** – 100% free, no hidden costs
 - **Modular Architecture** – Plug & Play plugins
 - **Fast & Stable** – Powered by [Telegraf](https://telegraf.js.org/)
@@ -147,6 +147,7 @@ module.exports = {
 
 > [!TIP]
 > Contributing
+
 1. Fork repository
 2. Create feature branch (`git checkout -b feature/new-feature`)
 3. Commit your changes (`git commit -m "Add new feature"`)
