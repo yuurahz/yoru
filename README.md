@@ -8,7 +8,7 @@
 
 <div align="center">
 
-[![Community](https://img.shields.io/badge/Telegram-blue?style=for-the-badge&logo=telegram)](https://t.me/yoshida_team)
+[![Community](https://img.shields.io/badge/Telegram?style=for-the-badge&logo=telegram)](https://t.me/yoshida_team)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 [![Issues](https://img.shields.io/github/issues/yuurahz/yoru?style=for-the-badge)](https://github.com/yuurahz/yoru/issues)
 [![Stars](https://img.shields.io/github/stars/yuurahz/yoru?style=for-the-badge)](https://github.com/yuurahz/yoru/stargazers)
@@ -39,7 +39,6 @@
 ### Requirements
 
 - [x] NodeJS >= 16 (Recommended v20.18.1)
-- [x] FFMPEG
 - [x] Server vCPU/RAM 100/500MB (Min)
 
 ### Server
