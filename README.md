@@ -1,7 +1,7 @@
 <div align="center">
     <h1>YORU</h1>
     <a href="https://github.com/yuurahz/yoru">
-        <img src="https://files.catbox.moe/obrip8.jpg" alt="Yoru Banner" width="400"/>
+        <img src="https://files.catbox.moe/obrip8.jpg" alt="Yoru"/>
     </a>
 </div>
 
@@ -17,6 +17,8 @@
 
 </div>
 
+---
+
 > [!NOTE]
 > **Yoru** is a modern Telegram bot framework designed for developers who need a robust foundation for building feature-rich bots. Whether you're creating a simple utility bot or a complex, multi-service platform, Yoru provides the architecture and tools to scale efficiently. It's built upon [@yoshx/func](https://www.npmjs.com/package/@yoshx/func) and optimized for lightweight performance.
 
@@ -24,45 +26,48 @@
 
 ## Table of Contents
 
-- [Why Choose Yoru?](#-why-choose-yoru)
-- [Requirements](#️-requirements)
-- [Getting Started](#-getting-started)
-- [Configuration](#️-configuration)
-- [Running the Bot](#️-running-the-bot)
-- [Installation via Docker](#-installation-via-docker)
-- [Plugin Development](#-plugin-development)
-- [PM2 Configuration](#️-pm2-configuration)
-- [Contributing](#-contributing)
-- [Troubleshooting](#-troubleshooting)
-- [License](#-license)
+- [Why Choose Yoru?](#why-choose-yoru)
+- [Requirements](#requirements)
+- [Getting Started](#getting-started)
+- [Configuration](#configuration)
+- [Running the Bot](#️running-the-bot)
+- [Installation via Docker](#installation-via-docker)
+- [Plugin Development](#plugin-development)
+- [PM2 Configuration](#pm2-configuration)
+- [Contributing](#contributing)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
 
 ---
 
 ## Why Choose Yoru?
 
--   **Free & Open Source:** Completely free for personal and commercial use under the MIT License.
--   **Modular Architecture:** Easily extend functionality with a simple plug-and-play plugin system.
--   **Fast & Stable:** Powered by [Telegraf](https://telegraf.js.org/), one of the most popular and reliable Telegram bot libraries.
--   **Hybrid Storage:** Choose between simple JSON file-based storage or a powerful MongoDB database for scalability.
--   **Active Roadmap:**
-    -   [x] **Robust Error Handling:** A more resilient system to gracefully handle errors and maintain a stable connection.
-    -   [ ] **Easy Deployment:** Streamlined processes for hosting on various platforms.
+- **Free & Open Source:** Completely free for personal and commercial use under the MIT License.
+- **Modular Architecture:** Easily extend functionality with a simple plug-and-play plugin system.
+- **Fast & Stable:** Powered by [Telegraf](https://telegraf.js.org/), one of the most popular and reliable Telegram bot libraries.
+- **Hybrid Storage:** Choose between simple JSON file-based storage or a powerful MongoDB database for scalability.
+- **Active Roadmap:**
+    - [x] **Robust Error Handling:** A more resilient system to gracefully handle errors and maintain a stable connection.
+    - [ ] **Easy Deployment:** Streamlined processes for hosting on various platforms.
 
 ---
 
 ## Requirements
 
 ### Software
-*   **NodeJS:** Version `16.x` or higher. (Recommended `v20.18.1`)
-*   **Git:** For cloning the repository.
+
+- **NodeJS:** Version `16.x` or higher. (Recommended `v20.18.1`)
+- **Git:** For cloning the repository.
 
 ### Hardware (Minimum Recommendation)
-*   **vCPU:** 1 Core
-*   **RAM:** 500 MB
+
+- **vCPU:** 1 Core
+- **RAM:** 500 MB
 
 ### Recommended Services
-*   **Hosting:** [Hostdata (NAT VPS)](https://hostdata.id/nat-vps-usa/), [The Hoster](https://optiklink.com/), [Orange VPS](https://www.orangevps.com/), [RDPWin](https://www.rdpwin.com/rdpbot.php)
-*   **Database:** [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) for a free cloud database.
+
+- **Hosting:** [Hostdata (NAT VPS)](https://hostdata.id/nat-vps-usa/), [The Hoster](https://optiklink.com/), [Orange VPS](https://www.orangevps.com/), [RDPWin](https://www.rdpwin.com/rdpbot.php)
+- **Database:** [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) for a free cloud database.
 
 ---
 
@@ -97,14 +102,14 @@ Next, open the `.env` file and customize the values as needed.
 
 Edit the `.env` file you just created:
 
-| Variable | Description | Example Value |
-| :--- | :--- | :--- |
-| `TOKEN_BOT` | Your unique bot token from [@BotFather](https://t.me/BotFather). | `123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11` |
-| `TZ` | The local timezone of your server. | `Asia/Jakarta` |
-| `LIMIT` | The daily command usage limit per user. | `50` |
-| `DATABASE_STATE` | Choose `json` for local files or `mongodb` for a database. | `json` |
-| `DATABASE_NAME` | The name of your database (for MongoDB). | `yoru_db` |
-| `MONGO_URL` | Your MongoDB connection string (if using `mongodb`). | `mongodb+srv://user:pass@cluster.mongodb.net/` |
+| Variable         | Description                                                      | Example Value  |
+| :--------------- | :--------------------------------------------------------------- | :------------- |
+| `TOKEN_BOT`      | Your unique bot token from [@BotFather](https://t.me/BotFather). | -              |
+| `TZ`             | The local timezone of your server.                               | `Asia/Jakarta` |
+| `LIMIT`          | The daily command usage limit per user.                          | `50`           |
+| `DATABASE_STATE` | Choose `json` for local files or `mongodb` for a database.       | `json`         |
+| `DATABASE_NAME`  | The name of your database (for MongoDB).                         | `yoru_db`      |
+| `MONGO_URL`      | Your MongoDB connection string (if using `mongodb`).             | -              |
 
 ---
 
@@ -112,15 +117,15 @@ Edit the `.env` file you just created:
 
 You can run the bot in several different modes:
 
--   **Production Mode:**
+- **Production Mode:**
     ```bash
     npm start
     ```
--   **Development Mode (with auto-reload on file changes):**
+- **Development Mode (with auto-reload on file changes):**
     ```bash
     npm run dev
     ```
--   **Using PM2 (to keep the bot online):**
+- **Using PM2 (to keep the bot online):**
     ```bash
     npm run pm2
     ```
@@ -159,6 +164,7 @@ docker logs -f yoru
 ```
 
 To stop the container:
+
 ```bash
 docker stop yoru
 ```
@@ -186,7 +192,7 @@ module.exports = {
 		const start = Date.now();
 		const msg = await m.reply("Pinging...");
 		const latency = Date.now() - start;
-		
+
 		await client.telegram.editMessageText(
 			m.chat,
 			msg.message_id,
@@ -197,12 +203,12 @@ module.exports = {
 	},
 
 	// Plugin permissions and properties
-	group: true,       // Works in groups
-	admin: false,      // Does not require admin
-	limit: 1,          // Consumes 1 usage limit (can be a Number or Boolean)
-	premium: false,    // Not premium-only
-	botAdmin: false,   // Bot does not need to be an admin
-	owner: false,      // Not owner-only
+	group: true, // Works in groups
+	admin: false, // Does not require admin
+	limit: 1, // Consumes 1 usage limit (can be a Number or Boolean)
+	premium: false, // Not premium-only
+	botAdmin: false, // Bot does not need to be an admin
+	owner: false, // Not owner-only
 };
 ```
 
@@ -213,13 +219,12 @@ Plugins can also respond to events instead of commands, such as replying to spec
 ```javascript
 // file: plugins/events/auto-reply.js
 module.exports = {
-
 	// The 'before' function runs on every incoming message
 	before: async (m, { client }) => {
 		if (m.body?.toLowerCase().includes("hello yoru")) {
 			await m.reply("👋 Hello there!");
 		}
-		
+
 		// Always return a boolean value
 		return true;
 	},
