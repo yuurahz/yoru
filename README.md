@@ -8,10 +8,11 @@
 
 <div align="center">
 
-[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D16-green?style=for-the-badge&logo=node.js)](https://nodejs.org)
-[![Telegram](https://img.shields.io/badge/Telegram-Bot-blue?style=for-the-badge&logo=telegram)](https://t.me/BotFather)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+[![Community](https://img.shields.io/badge/Telegram-Bot-blue?style=for-the-badge&logo=telegram)](https://t.me/yoshida_team)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+[![Issues](https://img.shields.io/github/issues/yuurahz/yoru?style=for-the-badge)](https://github.com/yuurahz/yoru/issues)
 [![Stars](https://img.shields.io/github/stars/yuurahz/yoru?style=for-the-badge)](https://github.com/yuurahz/yoru/stargazers)
+[![Forks](https://img.shields.io/github/forks/yuurahz/yoru?style=for-the-badge)](https://github.com/yuurahz/yoru/network/members)
 
 <h3>Lightweight & Powerful Telegram Bot</h3>
 
@@ -19,29 +20,55 @@
 
 ---
 
+> An implementation of [@yoshx/func](https://www.npmjs.com/package/@yoshx/func) which has been optimized to be lightweigth.
+
 > [!NOTE]
 > **Yoru** is a modern, scalable Telegram bot framework designed for developers who need a robust foundation for building feature-rich bots. Whether you're creating a simple utility bot or a complex multi-service platform, Yoru provides the architecture and tools to scale efficiently.
 
 # Why chose yoru?
 
-- **Free & Open Source** – 100% free, no hidden costs
-- **Modular Architecture** – Plug & Play plugins
-- **Fast & Stable** – Powered by [Telegraf](https://telegraf.js.org/)
-- **Hybrid Storage** – JSON + MongoDB support
-- **Robust** – Advanced error handling & stable connection
-- **Easy Deployment** – Works on local, VPS, PM2, or cloud services
+- [x] **Free & Open Source** – 100% free, no hidden costs
+- [x] **Modular Architecture** – Plug & Play plugins
+- [x] **Fast & Stable** – Powered by [Telegraf](https://telegraf.js.org/)
+- [x] **Hybrid Storage** – JSON + MongoDB support
+- [ ] **Robust** – Advanced error handling & stable connection
+- [ ] **Easy Deployment** – Works on local, VPS, PM2, or cloud services
 
 ---
+
+### Requirements
+
+- [x] NodeJS >= 16 (Recommended v20.18.1)
+- [x] FFMPEG
+- [x] Server vCPU/RAM 100/500MB (Min)
+
+### Server
+
+- [x] NAT VPS [Hostdata](https://hostdata.id/nat-vps-usa/) (Recommended)
+- [x] Hosting Panel [The Hoster](https://optiklink.com/)
+- [x] VPS [Orange VPS](https://www.orangevps.com/)
+- [x] RDP Windows [RDP Win](https://www.rdpwin.com/rdpbot.php)
+
+### Cloud Database
+
+- [x] MongoDB [MongoDB](https://www.mongodb.com)
 
 ### Quick Start
 
 #### 1. Clone & Install
 
-```bash
-git clone https://github.com/yuurahz/yoru.git
-cd yoru
-npm install
-```
+- **Clone the repository**
+    ```bash
+    git clone https://github.com/yuurahz/yoru.git
+    ```
+- **Open the cloned bot folder**
+    ```bash
+    cd yoru
+    ```
+- **Install all required packages**
+    ```bash
+    npm i
+    ```
 
 #### 2. Configure Environment
 
@@ -53,7 +80,7 @@ Edit `.env` as needed:
 
 | Variable       | Description                                    | Values       |
 | -------------- | ---------------------------------------------- | ------------ |
-| TOKEN_BOT      | Token dari [BotFather](https://t.me/BotFather) | -            |
+| TOKEN_BOT      | Token from [BotFather](https://t.me/BotFather) | -            |
 | TZ             | Local timezone                                 | Asia/Jakarta |
 | LIMIT          | Daily limit per user                           | 50           |
 | DATABASE_STATE | Choose between `json` or `mongodb`             | json         |
@@ -75,13 +102,31 @@ Edit `.env` as needed:
     npm run pm2
     ```
 
+### Install & Run Via Docker
+
+```bash
+sudo apt update -y && sudo apt install curl -y
+curl -fsSL https://get.docker.com | bash
+git clone https://github.com/yuurahz/yoru
+cd yoru
+docker build -t bot .
+docker run -d --name yoru bot && docker logs -f yoru
+```
+
+How to stop ?
+
+```bash
+docker stop yoru
+```
+
 ---
 
 ### Plugin Development
 
-Yoru uses a plugin system that is easy to extend.
+> [!IMPORTANT]
+> Yoru uses a flexible and easy to extend plugins calling system
 
-### Basic Plugin
+#### Basic Plugin
 
 ```js
 module.exports = {
@@ -105,16 +150,16 @@ module.exports = {
 	},
 
 	// Plugin permissions
-	group: false, // Works in groups
-	admin: false, // Requires admin
-	limit: false, // Uses command limit
-	premium: false, // Premium only
-	botAdmin: false, // Bot needs admin
-	owner: false, // Owner only
+	group: Boolean, // Works in groups
+	admin: Boolean, // Requires admin
+	limit: 1, // Uses command limit (can use between Number or Boolean)
+	premium: Boolean, // Premium only
+	botAdmin: Boolean, // Bot needs admin
+	owner: Boolean, // Owner only
 };
 ```
 
-### Event Handler
+#### Event Handler
 
 ```js
 module.exports = {
@@ -147,8 +192,7 @@ module.exports = {
 
 ---
 
-> [!TIP]
-> Contributing
+> [!TIP] Contributing
 
 1. Fork repository
 2. Create feature branch (`git checkout -b feature/new-feature`)
@@ -158,8 +202,7 @@ module.exports = {
 
 ---
 
-> [!WARNING]
-> Troubleshooting
+> [!WARNING] Troubleshooting
 
 **Bot not responding:**
 
