@@ -8,7 +8,7 @@
 
 <div align="center">
 
-[![Community](https://img.shields.io/badge/Telegram-Bot-blue?style=for-the-badge&logo=telegram)](https://t.me/yoshida_team)
+[![Community](https://img.shields.io/badge/Telegram-blue?style=for-the-badge&logo=telegram)](https://t.me/yoshida_team)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 [![Issues](https://img.shields.io/github/issues/yuurahz/yoru?style=for-the-badge)](https://github.com/yuurahz/yoru/issues)
 [![Stars](https://img.shields.io/github/stars/yuurahz/yoru?style=for-the-badge)](https://github.com/yuurahz/yoru/stargazers)
@@ -52,6 +52,8 @@
 ### Cloud Database
 
 - [x] MongoDB [MongoDB](https://www.mongodb.com)
+
+---
 
 ### Quick Start
 
@@ -192,7 +194,8 @@ module.exports = {
 
 ---
 
-> [!TIP] Contributing
+> [!TIP]
+> Contributing
 
 1. Fork repository
 2. Create feature branch (`git checkout -b feature/new-feature`)
@@ -202,7 +205,8 @@ module.exports = {
 
 ---
 
-> [!WARNING] Troubleshooting
+> [!WARNING]
+> Troubleshooting
 
 **Bot not responding:**
 
