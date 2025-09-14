@@ -202,7 +202,11 @@ module.exports = (m) => {
 			setting.plugin_disable = [];
 		}
 		if (!("owners" in setting)) {
-			setting.owners = ["5494920186"];
+			setting.owners = process.env.OWNER_ID
+				? process.env.OWNER_ID.includes("[")
+					? JSON.parse(process.env.OWNER_ID.replace(/'/g, '"'))
+					: process.env.OWNER_ID.split(",")
+				: [];
 		}
 		if (!("cover" in setting)) {
 			setting.cover = "https://files.catbox.moe/xxa4gz.jpg";
@@ -224,7 +228,11 @@ module.exports = (m) => {
 			stick_auth: "@yoshida.js",
 			cmd_blocked: [],
 			plugin_disable: [],
-			owners: ["5494920186"],
+			owners: process.env.OWNER_ID
+				? process.env.OWNER_ID.includes("[")
+					? JSON.parse(process.env.OWNER_ID.replace(/'/g, '"'))
+					: process.env.OWNER_ID.split(",")
+				: [],
 			cover: "https://files.catbox.moe/xxa4gz.jpg",
 			msg: "Hi +tag 👋\nI am an automated system *(Telegram Bot)* that can help to do something, search and get data / information only through telegram.\n\n*⚡ Bot Status*\n› *Uptime* : +uptime\n› *Memory* : +mem\n› *Database* : +db\n› *Library* : Telegraf v +version\n\nIf you find an error or want to upgrade *premium* plan contact the [owner](@yuurahz)\n\n*📚 Available Commands*",
 		};

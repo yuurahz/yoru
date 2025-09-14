@@ -45,6 +45,7 @@ module.exports = async (client, update) => {
 				if (botUsername === client.botInfo.username) command = cmd;
 				else m.prefix = null;
 			}
+
 			if (m.prefix) {
 				const args = m.body.slice(m.prefix.length).trim().split(/ +/);
 				args.shift();

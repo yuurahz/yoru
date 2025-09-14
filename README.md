@@ -56,7 +56,7 @@
 
 ### Software
 
-- **NodeJS:** Version `16.x` or higher. (Recommended `v20.18.1`)
+- **NodeJS:** Version `16.x` or higher. (Recommended `20.x`)
 - **Git:** For cloning the repository.
 
 ### Hardware (Minimum Recommendation)
@@ -66,7 +66,7 @@
 
 ### Recommended Services
 
-- **Hosting:** [Hostdata (NAT VPS)](https://hostdata.id/nat-vps-usa/), [The Hoster](https://optiklink.com/), [Orange VPS](https://www.orangevps.com/), [RDPWin](https://www.rdpwin.com/rdpbot.php)
+- **Hosting:** [Hostdata (NAT VPS)](https://hostdata.id/nat-vps-usa/), [Optiklink](https://optiklink.com/), [VPS](https://www.orangevps.com/), [RDPWin](https://www.rdpwin.com/rdpbot.php)
 - **Database:** [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) for a free cloud database.
 
 ---
@@ -105,6 +105,7 @@ Edit the `.env` file you just created:
 | Variable         | Description                                                      | Example Value  |
 | :--------------- | :--------------------------------------------------------------- | :------------- |
 | `TOKEN_BOT`      | Your unique bot token from [@BotFather](https://t.me/BotFather). | -              |
+| `OWNER_ID`       | ID of the account that will be used as the owner.                | -              |
 | `TZ`             | The local timezone of your server.                               | `Asia/Jakarta` |
 | `LIMIT`          | The daily command usage limit per user.                          | `50`           |
 | `DATABASE_STATE` | Choose `json` for local files or `mongodb` for a database.       | `json`         |
