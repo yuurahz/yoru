@@ -20,7 +20,7 @@
 ---
 
 > [!NOTE]
-> **Yoru** is a modern Telegram bot framework designed for developers who need a robust foundation for building feature-rich bots. Whether you're creating a simple utility bot or a complex, multi-service platform, Yoru provides the architecture and tools to scale efficiently. It's built upon [@yoshx/func](https://www.npmjs.com/package/@yoshx/func) and optimized for lightweight performance.
+> **Yoru** is a modern Telegram bot framework designed for developers who need a robust foundation for building feature-rich bots. Whether you're creating a simple utility bot or a complex, multi-service platform, Yoru provides the architecture and tools to scale efficiently and optimized for lightweight performance.
 
 ---
 

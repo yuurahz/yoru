@@ -1,5 +1,4 @@
-const Component = require("@yoshx/func").default;
-const { levelling } = new Component();
+const levelling = require("@system/levelling");
 
 module.exports = {
 	help: ["levelup"],

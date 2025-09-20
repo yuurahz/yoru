@@ -1,5 +1,5 @@
-const path = require("path");
-const { ReadStream } = require("fs");
+const path = require("node:path");
+const { ReadStream } = require("node:fs");
 
 module.exports = async (client, update) => {
 	try {

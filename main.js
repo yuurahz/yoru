@@ -1,10 +1,9 @@
 require("./settings");
+require("dotenv/config");
 require("module-alias/register");
 
-const Component = require("@yoshx/func").default;
-const { Color, Plugins } = new Component();
-const { loadPlugins, watchPlugins } = Plugins;
-
+const Color = require("./system/color");
+const { loadPlugins, watchPlugins } = require("./system/plugins");
 const { Telegraf } = require("telegraf");
 const { LocalDB, MongoDB } = require("@system/provider");
 
@@ -40,7 +39,9 @@ module.exports = connectTelegram = async () => {
 	const client = new Telegraf(process.env.TOKEN_BOT);
 	const botInfo = await client.telegram.getMe();
 	client.botInfo = botInfo;
-	console.log(Color.cyanBright(`-- Bot started as @${botInfo.username} --`));
+	console.log(
+		`${Color.cyanBright}-- Bot started as @${botInfo.username} --${Color.reset}`
+	);
 
 	client.on(["message", "callback_query"], async (ctx) => {
 		try {

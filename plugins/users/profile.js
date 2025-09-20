@@ -1,6 +1,5 @@
 const moment = require("moment-timezone");
-const Component = require("@yoshx/func").default;
-const { levelling } = new Component();
+const levelling = require("@system/levelling");
 
 function makeProgressBar(value, max, length = 20) {
 	let percent = Math.min(value / max, 1);

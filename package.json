@@ -1,6 +1,6 @@
 {
   "name": "yoru-telegram-bot",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Simple & lightweight telegram bot (Base)",
   "main": "index.js",
   "scripts": {
@@ -26,9 +26,9 @@
   },
   "homepage": "https://github.com/yuurahz/yoru#readme",
   "dependencies": {
-    "@google/genai": "^1.16.0",
-    "@yoshx/func": "*",
     "chess.js": "^1.4.0",
+    "dotenv": "^17.2.2",
+    "jimp": "^1.6.0",
     "module-alias": "^2.2.3",
     "mongodb": "^6.18.0",
     "node-cron": "^4.2.1",
@@ -42,7 +42,6 @@
     "prettier": "^3.5.3"
   },
   "_moduleAliases": {
-    "@src": "src",
     "@library": "library",
     "@system": "system"
   }

@@ -1,15 +1,16 @@
 const fs = require("fs");
 const cron = require("node-cron");
-const api = require("@system/api");
 const uploader = require("@library/uploader");
-const Component = require("@yoshx/func").default;
-const { Function: func, Color, Plugins } = new Component();
-const { plugins } = Plugins;
+const api = require("./api");
+const Color = require("./color");
+const Function = new (require("./functions"))();
+const { plugins } = require("./plugins");
 
 module.exports = async (client, m) => {
 	try {
-		require("@system/scheme")(m);
+		require("./scheme")(m);
 
+		const func = Function;
 		const users = global.db.users[m.sender];
 		const groupSet = global.db.groups[m.chat];
 		const setting = global.db.setting;
@@ -75,9 +76,9 @@ module.exports = async (client, m) => {
 						});
 
 						console.log(
-							Color.cyanBright(
-								"All users limit successfully reseted. . ."
-							)
+							Color.cyanBright +
+								"All users limit successfully reseted. . ." +
+								Color.reset
 						);
 					} catch (error) {
 						console.error("Daily reset error:", error);
@@ -299,7 +300,7 @@ module.exports = async (client, m) => {
 		}
 
 		if (m && !m.fromMe) {
-			console.log(Color.bgRed(" Telegram Message Info "));
+			console.log(Color.bgRed + " Telegram Message Info " + Color.reset);
 			console.log(
 				`   - Date: ${new Date().toLocaleString("id-ID")} WIB \n` +
 					`   - Message: ${m.body || m.type} \n` +

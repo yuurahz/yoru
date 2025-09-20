@@ -1,5 +1,4 @@
-const Component = require("@yoshx/func").default;
-const { Function: func } = new Component();
+const func = new (require("./system/functions"))();
 
 global.mess = Object.freeze({
 	owner: func.texted(
