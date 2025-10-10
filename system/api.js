@@ -1,7 +1,7 @@
 /** api urls */
 const APIs = {
 	yosh: "https://api.yoshida.my.id",
-	gratis: "https://api.apigratis.tech",
+	gratis: "https://api.apigratis.cc",
 };
 
 /** api key */

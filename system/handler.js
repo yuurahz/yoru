@@ -3,14 +3,13 @@ const cron = require("node-cron");
 const uploader = require("@library/uploader");
 const api = require("./api");
 const Color = require("./color");
-const Function = new (require("./functions"))();
+const func = require("@system/functions");
 const { plugins } = require("./plugins");
 
 module.exports = async (client, m) => {
 	try {
 		require("./scheme")(m);
 
-		const func = Function;
 		const users = global.db.users[m.sender];
 		const groupSet = global.db.groups[m.chat];
 		const setting = global.db.setting;

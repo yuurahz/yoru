@@ -1,215 +1,164 @@
-const fs = require("fs").promises;
+const { createClient } = require("@supabase/supabase-js");
 const { MongoClient } = require("mongodb");
+const fs = require("node:fs");
+const path = require("node:path");
 
 class LocalDB {
-	/**
-	 * Initializes the LocalDB instance with the provided file path.
-	 * @param {string} [filePath] - The path to the JSON file where the database will be stored. Defaults to 'database.json'.
-	 */
-	constructor(filePath) {
-		this.filePath = filePath ? filePath + ".json" : "database";
-		this.queue = [];
-		this.initDB();
+	constructor(filename = `${DATABASE_NAME}.json`) {
+		this.filename = path.resolve(filename);
+		if (!fs.existsSync(this.filename)) {
+			fs.writeFileSync(this.filename, JSON.stringify({}, null, 2));
+		}
 	}
 
-	/**
-	 * Initializes the database by checking if the file exists.
-	 * If the file does not exist, it creates an empty JSON file.
-	 * @returns {Promise<void>}
-	 */
-	initDB = async () => {
-		try {
-			await fs.access(this.filePath);
-		} catch (err) {
-			await this.read({});
-		}
-	};
-
-	/**
-	 * Validates if the provided data is a valid JSON object.
-	 * @param {any} data - The data to be validated.
-	 * @returns {boolean} - Returns true if the data is valid JSON, otherwise false.
-	 */
 	validateJSON = (data) => {
 		try {
-			JSON.stringify(data, null);
+			JSON.stringify(data);
 			return true;
-		} catch (err) {
+		} catch {
 			return false;
 		}
 	};
 
-	/**
-	 * Adds data to the internal queue to be read later.
-	 * @param {object} data - The data to be added to the queue.
-	 */
-	enqueue = (data) => this.queue.push(data);
-
-	/**
-	 * reads the valid data from the queue to the file.
-	 * If the data is valid JSON, it will be written to the file.
-	 * @param {object} data - The data to be read to the file.
-	 * @returns {Promise<void>}
-	 */
-	write = async (data) => {
-		this.enqueue(data);
-
-		const validData = this.queue.filter(this.validateJSON);
-		this.queue = [];
-
-		if (validData.length > 0) {
-			try {
-				await fs.writeFile(
-					this.filePath,
-					JSON.stringify(validData[0], null),
-					"utf8"
-				);
-			} catch (err) {
-				console.log(`Failed to read data: ${err.message}`);
-			}
-		} else {
-			console.log("No valid data to read");
+	write = (dataToSave) => {
+		if (!this.validateJSON(dataToSave)) {
+			console.log("No valid data to save");
+			return;
+		}
+		try {
+			fs.writeFileSync(
+				this.filename,
+				JSON.stringify(dataToSave, null, 2)
+			);
+		} catch (error) {
+			console.error("Failed to save local JSON: " + error.message);
 		}
 	};
 
-	/**
-	 * Fetches the data from the JSON file and returns it.
-	 * @returns {Promise<object|null>} - The parsed data from the file, or null if an error occurred.
-	 */
-	read = async () => {
+	read = () => {
 		try {
-			const data = await fs.readFile(this.filePath, "utf8");
+			const data = fs.readFileSync(this.filename);
 			return JSON.parse(data);
-		} catch (err) {
-			console.log(`Failed to fetch data: ${err.message}`);
-			return null;
+		} catch (error) {
+			console.error("Failed to read local JSON: " + error.message);
+			return {};
 		}
 	};
 }
 
 class MongoDB {
-	constructor(connectionUrl, collectionName) {
-		this.url = connectionUrl;
-		this.collectionName = collectionName || "data";
-		this.client = new MongoClient(this.url);
-		this.db = null;
-		this.collection = null;
-		this.queue = [];
-		this.initDB();
+	constructor(url, dbName) {
+		this.url = url;
+		this.dbName = dbName;
+		this.client = new MongoClient(this.url, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+		});
+		this.collectionName = DATABASE_NAME;
 	}
 
-	/**
-	 * Initialize database connection
-	 */
-	initDB = async () => {
+	async write(dataToSave) {
 		try {
 			await this.client.connect();
-			this.db = this.client.db(this.dbName);
-			this.collection = this.db.collection(this.collectionName);
-			await this.createCollectionIfNotExists();
+			const db = this.client.db(this.dbName);
+			const collection = db.collection(this.collectionName);
+
+			await collection.updateOne(
+				{ _id: DATABASE_NAME },
+				{ $set: { data: dataToSave } },
+				{ upsert: true }
+			);
 		} catch (error) {
-			console.error("Failed to initialize database: " + error.message);
+			console.error("Failed to save to MongoDB: " + error.message);
+		} finally {
+			await this.client.close();
 		}
-	};
+	}
 
-	/**
-	 * Create collection if it doesn't exist
-	 */
-	createCollectionIfNotExists = async () => {
-		if (!this.db) {
-			return;
+	async read() {
+		try {
+			await this.client.connect();
+			const db = this.client.db(this.dbName);
+			const collection = db.collection(this.collectionName);
+
+			const result = await collection.findOne({ _id: DATABASE_NAME });
+			return result ? result.data : {};
+		} catch (error) {
+			console.error("Failed to fetch MongoDB: " + error.message);
+			return {};
+		} finally {
+			await this.client.close();
 		}
+	}
+}
 
-		const collections = await this.db
-			.listCollections({ name: this.collectionName })
-			.toArray();
+class SupabaseDB {
+	constructor(url, key, tableName = DATABASE_NAME) {
+		this.client = createClient(url, key);
+		this.tableName = tableName;
+	}
 
-		if (collections.length === 0) {
-			await this.db.createCollection(this.collectionName);
-		}
-	};
-
-	/**
-	 * Validate JSON data
-	 * @param {*} data - Data to validate
-	 * @returns {boolean} - True if valid JSON
-	 */
 	validateJSON = (data) => {
 		try {
 			JSON.stringify(data);
 			return true;
-		} catch (error) {
+		} catch {
 			return false;
 		}
 	};
 
-	/**
-	 * Add data to processing queue
-	 * @param {*} data - Data to enqueue
-	 */
-	enqueue = (data) => this.queue.push(data);
-
-	/**
-	 * Read data to database
-	 * @param {*} dataToSave - Data to save to database
-	 */
-	write = async (dataToSave) => {
-		await this.ensureDBReady();
-		this.enqueue(dataToSave);
-
-		const processedData = this.queue.filter(this.validateJSON);
-		this.queue = [];
-
-		if (processedData.length > 0) {
-			try {
-				const existingRecord = await this.collection.findOne({});
-
-				if (existingRecord) {
-					const updateData = {
-						$set: processedData[0],
-					};
-					await this.collection.updateOne({}, updateData);
-				} else {
-					await this.collection.insertOne(processedData[0]);
-				}
-			} catch (error) {
-				console.error("Failed to save data: " + error.message);
-			}
-		} else {
+	async write(dataToSave) {
+		if (!this.validateJSON(dataToSave)) {
 			console.log("No valid data to save");
+			return;
 		}
-	};
-
-	/**
-	 * Fetch data from database
-	 * @returns {Object} - Retrieved data or empty object
-	 */
-	read = async () => {
-		await this.ensureDBReady();
 
 		try {
-			const result = await this.collection.findOne({});
-			return result || {};
+			const { data: existing, error: readError } = await this.client
+				.from(this.tableName)
+				.select("*")
+				.eq("id", 1)
+				.single();
+
+			if (readError && readError.code !== "PGRST116") {
+				console.error("Failed to read Supabase: " + readError.message);
+				return;
+			}
+
+			if (existing) {
+				await this.client
+					.from(this.tableName)
+					.update({ data: dataToSave })
+					.eq("id", 1);
+			} else {
+				await this.client
+					.from(this.tableName)
+					.insert({ id: 1, data: dataToSave });
+			}
 		} catch (error) {
-			console.error("Failed to fetch data: " + error.message);
+			console.error("Failed to save to Supabase: " + error.message);
 		}
-	};
+	}
 
-	/**
-	 * Close database connection
-	 */
-	close = async () => {
-		await this.client.close();
-	};
+	async read() {
+		try {
+			const { data, error } = await this.client
+				.from(this.tableName)
+				.select("data")
+				.eq("id", 1)
+				.single();
 
-	/**
-	 * Ensure database and collection are ready
-	 */
-	ensureDBReady = async () => {
-		if (!this.db || !this.collection) {
-			await this.initDB();
+			if (error && error.code !== "PGRST116") {
+				console.error("Failed to fetch Supabase: " + error.message);
+				return {};
+			}
+
+			return data ? data.data : {};
+		} catch (error) {
+			console.error("Failed to fetch Supabase: " + error.message);
+			return {};
 		}
-	};
+	}
 }
 
-module.exports = { LocalDB, MongoDB };
+module.exports = { LocalDB, MongoDB, SupabaseDB };

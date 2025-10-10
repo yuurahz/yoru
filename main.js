@@ -12,7 +12,13 @@ module.exports = connectTelegram = async () => {
 		? new LocalDB(process.env.DATABASE_NAME)
 		: /mongo/i.test(process.env.DATABASE_STATE)
 			? new MongoDB(process.env.MONGO_URL, process.env.DATABASE_NAME)
-			: process.exit(1);
+			: /supabase/i.test(process.env.DATABASE_STATE)
+				? new SupabaseDB(
+						process.env.SUPABASE_URL,
+						process.env.SUPABASE_KEY,
+						process.env.DATABASE_NAME
+					)
+				: process.exit(1);
 
 	/* load database */
 	global.db = {

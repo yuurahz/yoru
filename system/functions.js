@@ -4,7 +4,7 @@ const moment = require("moment-timezone");
 const crypto = require("node:crypto");
 const util = require("node:util");
 
-module.exports = class Function {
+class Function {
 	generateRandomString = (length) => {
 		const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		let result = "";
@@ -1296,4 +1296,6 @@ module.exports = class Function {
 
 		return output.join("");
 	};
-};
+}
+
+module.exports = new Function();

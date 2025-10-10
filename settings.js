@@ -1,4 +1,4 @@
-const func = new (require("./system/functions"))();
+const func = require("./system/functions");
 
 global.mess = Object.freeze({
 	owner: func.texted(

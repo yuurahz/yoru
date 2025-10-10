@@ -1,0 +1,66 @@
+{
+  "users": {
+    "5494920186": {
+      "exp": 6,
+      "limit": "50",
+      "money": 0,
+      "expired": 0,
+      "level": 0,
+      "afk": -1,
+      "lastseen": 1760128240886,
+      "warn": 0,
+      "registered": false,
+      "name": "",
+      "age": 1,
+      "unreglast": 0,
+      "regis_time": -1,
+      "serial_number": null,
+      "afkReason": "",
+      "banned": false,
+      "premium": false,
+      "role": "Newbie",
+      "activity": {}
+    }
+  },
+  "groups": {},
+  "setting": {
+    "menu_style": 0,
+    "lastreset": 1760128152079,
+    "action_mode": false,
+    "self_mode": false,
+    "debug_mode": false,
+    "group_mode": false,
+    "private_mode": false,
+    "stick_pack": "Sticker by",
+    "stick_auth": "@yoshida.js",
+    "cmd_blocked": [],
+    "plugin_disable": [],
+    "owners": [
+      "5494920186"
+    ],
+    "cover": "https://files.catbox.moe/xxa4gz.jpg",
+    "msg": "Hi +tag 👋\nI am an automated system *(Telegram Bot)* that can help to do something, search and get data / information only through telegram.\n\n*⚡ Bot Status*\n› *Uptime* : +uptime\n› *Memory* : +mem\n› *Database* : +db\n› *Library* : Telegraf v +version\n\nIf you find an error or want to upgrade *premium* plan contact the [owner](@yuurahz)\n\n*📚 Available Commands*"
+  },
+  "stats": {
+    "ping": {
+      "hitstat": 2,
+      "today": 2,
+      "lasthit": 1760128157779
+    },
+    "tiktok": {
+      "hitstat": 1,
+      "today": 1,
+      "lasthit": 1760128191112
+    }
+  },
+  "others": {
+    "game": {},
+    "store": {},
+    "badwords": [],
+    "links": [
+      "chat.whatsapp.com",
+      "whatsapp.com",
+      "t.me"
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("node:fs");
 
 module.exports = {
 	command: /^(menu|help|listmenu|list)$/i,
@@ -89,9 +89,13 @@ module.exports = {
 			.replace("+mem", func.formatSize(process.memoryUsage().heapUsed))
 			.replace(
 				"+db",
-				/mongo/.test(process.env.DATABASE_STATE)
-					? "Mongo"
-					: `Local (${local_size})`
+				/json/i.test(process.env.DATABASE_STATE)
+					? `Local : (${local_size})`
+					: /mongo/i.test(process.env.DATABASE_STATE)
+						? "MongoDB"
+						: /supabase/i.test(process.env.DATABASE_STATE)
+							? "Supabase (PostgreSQL)"
+							: "Dummy"
 			)
 			.replace("+version", library.dependencies.telegraf);
 
