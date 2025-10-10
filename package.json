@@ -1,6 +1,6 @@
 {
   "name": "yoru-telegram-bot",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Simple & lightweight telegram bot (Base)",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/yuurahz/yoru#readme",
   "dependencies": {
+    "@supabase/supabase-js": "^2.75.0",
     "chess.js": "^1.4.0",
     "dotenv": "^17.2.2",
     "jimp": "^1.6.0",
