@@ -6,7 +6,7 @@ module.exports = {
 	run: async (m, { client, func, api }) => {
 		try {
 			const { result } = await func.fetchJson(
-				api("yosh", "/random/lahelu")
+				api("yosh", "/r/lahelu")
 			);
 			if (!result || !result?.length) return m.reply("No memes found!");
 

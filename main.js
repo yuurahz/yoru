@@ -5,7 +5,7 @@ require("module-alias/register");
 const Color = require("./system/color");
 const { loadPlugins, watchPlugins } = require("./system/plugins");
 const { Telegraf } = require("telegraf");
-const { LocalDB, MongoDB } = require("@system/provider");
+const { LocalDB, MongoDB, SupabaseDB } = require("@system/provider");
 
 module.exports = connectTelegram = async () => {
 	const mydb = /json/i.test(process.env.DATABASE_STATE)

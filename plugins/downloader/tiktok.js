@@ -14,7 +14,7 @@ module.exports = {
 
 		try {
 			const apiResponse = await func.fetchJson(
-				api("yosh", "/downloader/tiktok", { url: m.text })
+				api("yosh", "/d/tiktok", { url: m.text })
 			);
 			const data = apiResponse.result.data;
 			if (!data) throw new Error("Failed to fetch media from the URL.");

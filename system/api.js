@@ -1,6 +1,6 @@
 /** api urls */
 const APIs = {
-	yosh: "https://api.yoshida.my.id",
+	yosh: "https://api.yoshida.biz.id",
 	gratis: "https://api.apigratis.cc",
 };
 

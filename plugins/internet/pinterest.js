@@ -37,7 +37,7 @@ module.exports = {
 			}
 
 			const { result } = await func.fetchJson(
-				api("yosh", "/internet/pinterest", { query: searchQuery })
+				api("yosh", "/i/pinterest", { query: searchQuery })
 			);
 			if (Object.values(result).length < 1) {
 				return m.reply(mess.notfound);
