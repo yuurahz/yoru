@@ -9,7 +9,7 @@ const { LocalDB, MongoDB, SupabaseDB } = require("@system/provider");
 
 module.exports = connectTelegram = async () => {
 	const mydb = /json/i.test(process.env.DATABASE_STATE)
-		? new LocalDB(process.env.DATABASE_NAME)
+		? new LocalDB(process.env.DATABASE_NAME + ".json")
 		: /mongo/i.test(process.env.DATABASE_STATE)
 			? new MongoDB(process.env.MONGO_URL, process.env.DATABASE_NAME)
 			: /supabase/i.test(process.env.DATABASE_STATE)

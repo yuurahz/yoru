@@ -28,7 +28,7 @@ module.exports = {
 			}
 
 			const { data: apiData } = await axios.get(
-				api("yosh", "/d/youtube", {
+				api("yosh", "/api/d/youtube", {
 					url: videoInfo.url,
 					type: "mp3",
 				})

@@ -31,7 +31,7 @@ module.exports = {
 
 		const formatDate = (ts) =>
 			ts
-				? moment(ts).tz("Asia/Jakarta").format("DD/MM/YYYY HH:mm:ss")
+				? moment(ts).tz(process.env.TZ).format("DD/MM/YYYY HH:mm:ss")
 				: "-";
 
 		const multiplier = process.env.LEVEL_MULTIPLIER;

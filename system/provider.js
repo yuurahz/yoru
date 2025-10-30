@@ -4,7 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 class LocalDB {
-	constructor(filename = `${DATABASE_NAME}.json`) {
+	constructor(filename = `${process.env.DATABASE_NAME}.json`) {
 		this.filename = path.resolve(filename);
 		if (!fs.existsSync(this.filename)) {
 			fs.writeFileSync(this.filename, JSON.stringify({}, null, 2));
@@ -54,7 +54,7 @@ class MongoDB {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 		});
-		this.collectionName = DATABASE_NAME;
+		this.collectionName = process.env.DATABASE_NAME;
 	}
 
 	async write(dataToSave) {
@@ -64,7 +64,7 @@ class MongoDB {
 			const collection = db.collection(this.collectionName);
 
 			await collection.updateOne(
-				{ _id: DATABASE_NAME },
+				{ _id: process.env.DATABASE_NAME },
 				{ $set: { data: dataToSave } },
 				{ upsert: true }
 			);
@@ -81,7 +81,9 @@ class MongoDB {
 			const db = this.client.db(this.dbName);
 			const collection = db.collection(this.collectionName);
 
-			const result = await collection.findOne({ _id: DATABASE_NAME });
+			const result = await collection.findOne({
+				_id: process.env.DATABASE_NAME,
+			});
 			return result ? result.data : {};
 		} catch (error) {
 			console.error("Failed to fetch MongoDB: " + error.message);
@@ -93,7 +95,7 @@ class MongoDB {
 }
 
 class SupabaseDB {
-	constructor(url, key, tableName = DATABASE_NAME) {
+	constructor(url, key, tableName = process.env.DATABASE_NAME) {
 		this.client = createClient(url, key);
 		this.tableName = tableName;
 	}

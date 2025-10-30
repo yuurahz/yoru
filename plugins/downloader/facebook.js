@@ -11,7 +11,7 @@ module.exports = {
 
 		try {
 			const data = await func.fetchJson(
-				api("yosh", "/d/facebook", { url: m.text })
+				api("yosh", "/api/d/facebook", { url: m.text })
 			);
 			if (!data.status) return m.reply(mess.wrong);
 
