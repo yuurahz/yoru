@@ -38,7 +38,7 @@
     "yt-search": "^2.13.1"
   },
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.0",
     "nodemon": "^3.1.10",
     "prettier": "^3.5.3"
   },
