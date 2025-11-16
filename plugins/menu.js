@@ -122,7 +122,7 @@ module.exports = {
 					},
 				],
 				[
-					{ text: "🔗 Official Site", url: "https://yoshida.my.id" },
+					{ text: "🔗 Official Site", url: "https://yoshida.biz.id" },
 					{ text: "💰 Donate", url: "https://saweria.co/yoshida" },
 				],
 			];
