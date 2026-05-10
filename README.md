@@ -1,7 +1,7 @@
 <div align="center">
     <h1>YORU</h1>
     <a href="https://github.com/yuurahz/yoru">
-        <img src="https://files.catbox.moe/obrip8.jpg" alt="Yoru"/>
+        <img src="https://files.catbox.moe/x2iv5t.jpg" alt="Yoru"/>
     </a>
 </div>
 
