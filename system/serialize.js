@@ -31,7 +31,7 @@ module.exports = async (client, update) => {
 		const prefixRegex = /^[\\/!.#]/;
 		m.prefix = prefixRegex.test(m.body)
 			? m.body.match(prefixRegex)[0]
-			: "/";
+			: null;
 
 		if (m.prefix) {
 			let command = m.body
@@ -179,8 +179,8 @@ module.exports = async (client, update) => {
 		}
 
 		m.answer = (text, showAlert = false) => {
-			if (!m.isCallback) return;
-			client.telegram.answerCbQuery(m.callbackId, text, {
+			if (!m.isCallback) return Promise.resolve();
+			return client.telegram.answerCbQuery(m.callbackId, text, {
 				show_alert: showAlert,
 			});
 		};
@@ -244,8 +244,15 @@ module.exports = async (client, update) => {
 			}
 		};
 
-		m.delete = (messageId = m.id) =>
-			client.telegram.deleteMessage(m.chat, messageId).catch(() => {});
+		m.delete = (messageId = m.id) => {
+			const id =
+				typeof messageId === "object" &&
+				messageId !== null &&
+				messageId.message_id
+					? messageId.message_id
+					: messageId;
+			return client.telegram.deleteMessage(m.chat, id).catch(() => {});
+		};
 
 		m.sendMedia = async (jid, input, opt = {}) => {
 			const source =

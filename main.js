@@ -3,7 +3,7 @@ require("dotenv/config");
 require("module-alias/register");
 
 const Color = require("./system/color");
-const { loadPlugins, watchPlugins } = require("./system/plugins");
+const { plugins, loadPlugins, watchPlugins } = require("./system/plugins");
 const { Telegraf } = require("telegraf");
 const { LocalDB, MongoDB, SupabaseDB } = require("@system/provider");
 
@@ -103,6 +103,60 @@ module.exports = connectTelegram = async () => {
 
 	/** load plugins directory */
 	loadPlugins(client);
+
+	try {
+		const botCommands = [];
+		for (const name in plugins) {
+			const plugin = plugins[name];
+			const cmdData = typeof plugin.run === "function" ? plugin : plugin;
+
+			if (cmdData.category === "owner") {
+				continue;
+			}
+
+			if (!cmdData.help) continue;
+
+			let cmdList = [];
+			if (typeof cmdData.help === "string") {
+				cmdList.push(cmdData.help);
+			} else if (Array.isArray(cmdData.help)) {
+				cmdList = cmdData.help.filter((c) => typeof c === "string");
+			}
+
+			const validCmds = cmdList.filter((c) =>
+				/^[a-z0-9_]{1,32}$/.test(c.toLowerCase())
+			);
+
+			if (validCmds.length > 0) {
+				const description =
+					cmdData.desc ||
+					cmdData.description ||
+					`Menjalankan perintah ${validCmds[0]}`;
+
+				for (const cmd of validCmds) {
+					botCommands.push({
+						command: cmd.toLowerCase(),
+						description: String(description).substring(0, 256),
+					});
+				}
+			}
+		}
+
+		const uniqueCommands = Array.from(
+			new Map(botCommands.map((item) => [item.command, item])).values()
+		);
+
+		if (uniqueCommands.length > 0) {
+			const limitCmds = uniqueCommands.slice(0, 100);
+			await client.telegram.setMyCommands(limitCmds);
+			console.log(
+				`${Color.greenBright}Successfully registered ${limitCmds.length} slash commands to Telegram (Excluded 'owner' category).${Color.reset}`
+			);
+		}
+	} catch (error) {
+		console.error("Failed to register slash commands:", error);
+	}
+
 	/** watch plugins after change */
 	watchPlugins(client);
 

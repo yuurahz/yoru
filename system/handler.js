@@ -247,7 +247,8 @@ module.exports = async (client, m) => {
 				);
 			}
 			if (!isPrems && plugin.limit && users.limit > 0) {
-				const limit = plugin.limit === "Boolean" ? 1 : plugin.limit;
+				const limit =
+					typeof plugin.limit === "boolean" ? 1 : plugin.limit;
 				if (users.limit >= limit) {
 					users.limit -= limit;
 				} else {
