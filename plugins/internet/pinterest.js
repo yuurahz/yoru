@@ -1,9 +1,11 @@
+const pinterest = require("../../system/scrapers/pinterest");
+
 module.exports = {
 	help: ["pinterest"],
 	category: "internet",
 	command: /^(pinterest|pin)$/i,
 	desc: "Searches for images on Pinterest.",
-	run: async (m, { client, func, api }) => {
+	run: async (m, { func }) => {
 		if (!m.text) {
 			return m.reply(
 				`*~ Example:* ${m.prefix + m.command} anime\n\n*options:*\n${m.prefix + m.command} *<query>*\n\`search an ${m.command} image with query.\`\n${m.prefix + m.command} *<query> --<amount>*\n\`search an ${m.command} image with the specified amount (max 10 images).\``
@@ -22,33 +24,21 @@ module.exports = {
 				numberOfImages = parseInt(numberFlagMatch[1]);
 				searchQuery = input.replace(/--\d+$/, "").trim();
 
-				if (numberOfImages > 10) {
-					numberOfImages = 10;
-					m.reply(
-						func.texted(
-							"bold",
-							"Maximum 10 images allowed. Downloading 10 images..."
-						)
-					);
-				}
-				if (numberOfImages < 1) {
-					numberOfImages = 1;
-				}
+				if (numberOfImages > 10) numberOfImages = 10;
+				if (numberOfImages < 1) numberOfImages = 1;
 			}
 
-			const { result } = await func.fetchJson(
-				api("yosh", "/api/i/pinterest", { query: searchQuery })
-			);
-			if (Object.values(result).length < 1) {
-				return m.reply(mess.notfound);
+			const results = await pinterest.search(searchQuery);
+			if (!results || results.length < 1) {
+				return m.reply("❌ No Pinterest images found for your query.");
 			}
 
 			let selectedImages = [];
-			let availableResults = Object.values(result);
+			let availableResults = [...results];
 
 			for (
 				let i = 0;
-				i < numberOfImages && i < availableResults.length;
+				i < numberOfImages && availableResults.length > 0;
 				i++
 			) {
 				let randomImage = func.random(availableResults);
@@ -60,11 +50,16 @@ module.exports = {
 
 			for (let i = 0; i < selectedImages.length; i++) {
 				const hasil = selectedImages[i];
-
-				await m.sendMedia(m.chat, hasil.image, { type: "photo" });
+				await m.sendMedia(m.chat, hasil.image, {
+					type: "photo",
+					caption:
+						numberOfImages === 1
+							? `📌 *${hasil.title}*`
+							: undefined,
+				});
 
 				if (i < selectedImages.length - 1) {
-					await new Promise((resolve) => setTimeout(resolve, 1500));
+					await func.delay(1500);
 				}
 			}
 
@@ -74,8 +69,8 @@ module.exports = {
 				);
 			}
 		} catch (e) {
-			console.log(e);
-			return m.reply(mess.eror);
+			console.error(e);
+			return m.reply(mess.error);
 		} finally {
 			m.delete(loadingMsg);
 		}

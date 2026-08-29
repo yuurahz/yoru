@@ -33,12 +33,50 @@ module.exports = connectTelegram = async () => {
 	/* save database */
 	await mydb.write(global.db);
 
-	/** Database auto-save */
-	const saveInterval = setInterval(async () => {
+	/** Database auto-save & daily reset */
+	setInterval(async () => {
 		try {
 			await mydb.write(global.db);
 		} catch (error) {
 			console.error("Failed to auto-save database:", error);
+		}
+	}, 60 * 1000);
+
+	let lastResetDate = new Date().toLocaleDateString("en-CA", {
+		timeZone: process.env.TZ || "Asia/Jakarta",
+	});
+	setInterval(() => {
+		const currentDate = new Date().toLocaleDateString("en-CA", {
+			timeZone: process.env.TZ || "Asia/Jakarta",
+		});
+		if (currentDate !== lastResetDate) {
+			lastResetDate = currentDate;
+			try {
+				if (global.db?.setting)
+					global.db.setting.lastreset = Date.now();
+				const defaultLimit = parseInt(process.env.LIMIT) || 15;
+				if (global.db?.users) {
+					Object.values(global.db.users).forEach((user) => {
+						if (
+							user &&
+							user.limit < defaultLimit &&
+							!user.premium
+						) {
+							user.limit = defaultLimit;
+						}
+					});
+				}
+				if (global.db?.stats) {
+					Object.values(global.db.stats).forEach((stat) => {
+						if (stat && typeof stat === "object") stat.today = 0;
+					});
+				}
+				console.log(
+					`${Color.cyanBright}All users limit successfully reseted. . .${Color.reset}`
+				);
+			} catch (error) {
+				console.error("Daily reset error:", error);
+			}
 		}
 	}, 60 * 1000);
 

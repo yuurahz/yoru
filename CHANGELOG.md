@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.0] - 2026-08-29
+
+### Added
+
+- **Decoupled Internal Scraper Architecture**: Created `system/scrapers/` with clean, standalone scraper modules for YouTube (`yt-dlp`), Spotify (TOTP & SpotiDown), Facebook, Instagram, TikTok, Pinterest, Lahelu, LRCLIB Lyrics, MediaFire, Google Drive, CapCut, and Threads.
+- **New Downloader Plugins**:
+    - `spotify.js` (`/spotify`, `/song`): Search & download MP3 tracks from Spotify.
+    - `mediafire.js` (`/mediafire`, `/mf`): Direct file extraction from MediaFire links.
+    - `gdrive.js` (`/gdrive`, `/gd`): Direct download from Google Drive links.
+    - `capcut.js` (`/capcut`, `/cc`): Download template videos from CapCut without watermark.
+    - `threads.js` (`/threads`, `/th`): Download media from Instagram Threads.
+    - `lyrics.js` (`/lyrics`, `/lirik`): Search synced & plain lyrics from LRCLIB.
+- **Module Alias `@scrapers`**: Added `@scrapers` module alias for clean and standardized imports.
+
+### Changed & Modernized
+
+- **Native DateTime & UTC**: Replaced `moment-timezone` with native `Intl.DateTimeFormat` and `Date#toLocaleString`.
+- **Lightweight ANSI Color**: Simplified `system/color.js` from 145 lines of complex generators to lightweight static ANSI escape sequences.
+- **Daily Reset Engine**: Moved daily user limit & stats reset from in-message cron to a process-level `setInterval` in `main.js`.
+- **Decoupled Plugins**: Refactored all downloader and internet plugins to act as lightweight controllers delegating to `system/scrapers/`.
+
+### Removed
+
+- **Bloated Dependencies**: Removed `jimp`, `node-cron`, `moment-timezone`, and unneeded scraper libraries (`btch-downloader`, `@distube/ytdl-core`, `cakkatrok-instagram-downloader`).
+- **Dead Code**: Stripped 822 lines of unused unicode font styles and 14 uncalled helper functions in `system/functions.js`.
+- **Legacy Uploader**: Removed dead `library/uploader.js` (408 lines).
+
+---
+
 ## [3.4.8] - 2026-06-26
 
 ### Added

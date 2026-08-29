@@ -1,18 +1,16 @@
+const lahelu = require("../../system/scrapers/lahelu");
+
 module.exports = {
 	help: ["meme"],
 	category: "internet",
 	command: /^(meme|lahelu)$/i,
 	desc: "Getting random memes from the internet",
-	run: async (m, { client, func, api }) => {
+	run: async (m) => {
 		try {
-			const { result } = await func.fetchJson(
-				api("yosh", "/api/r/lahelu")
-			);
-			if (!result || !result?.length) return m.reply("No memes found!");
+			const meme = await lahelu.getRandomMeme();
+			if (!meme) return m.reply("No memes found!");
 
-			const meme = result[Math.floor(Math.random() * result.length)];
-
-			const caption = `*${meme.title || "No Title"}*\n\n👤 By: ${meme.userUsername}\n👍 ${meme.totalUpvotes} | 👎 ${meme.totalDownvotes} | 💬 ${meme.totalComments}\n\n#${(meme.hashtags || []).join(" #")}`;
+			const caption = `*${meme.title}*\n\n👤 By: ${meme.author}\n👍 ${meme.stats.upvotes} | 👎 ${meme.stats.downvotes} | 💬 ${meme.stats.comments}\n\n#${meme.hashtags.join(" #")}`;
 
 			const buttons = {
 				reply_markup: {
@@ -22,20 +20,20 @@ module.exports = {
 				},
 			};
 
-			if (meme.mediaType === 0) {
-				await m.sendMedia(m.chat, meme.media, {
-					type: "photo",
-					caption,
-					...buttons,
-				});
-			} else if (meme.mediaType === 1) {
+			if (meme.type === "video") {
 				await m.sendMedia(m.chat, meme.media, {
 					type: "video",
 					caption,
 					...buttons,
 				});
+			} else if (meme.media) {
+				await m.sendMedia(m.chat, meme.media, {
+					type: "photo",
+					caption,
+					...buttons,
+				});
 			} else {
-				await m.reply(caption + `\n\n🔗 ${meme.media}`);
+				await m.reply(caption);
 			}
 		} catch (e) {
 			console.error(e);
@@ -43,20 +41,15 @@ module.exports = {
 		}
 	},
 
-	callback: async (m, { client, func, api }) => {
+	callback: async (m) => {
 		if (!m.isCallback) return;
-		if (!m.callbackData.startsWith("next_")) return;
+		if (!m.callbackData?.startsWith("next_")) return;
 		if (m.callbackData === "next_meme") {
 			try {
-				const { result } = await func.fetchJson(
-					api("yosh", "/random/lahelu")
-				);
-				if (!result || !result?.length)
-					return m.edit("No memes found!");
+				const meme = await lahelu.getRandomMeme();
+				if (!meme) return m.edit("No memes found!");
 
-				const meme = result[Math.floor(Math.random() * result.length)];
-
-				const caption = `*${meme.title || "No Title"}*\n\n👤 By: ${meme.userUsername}\n👍 ${meme.totalUpvotes} | 👎 ${meme.totalDownvotes} | 💬 ${meme.totalComments}\n\n#${(meme.hashtags || []).join(" #")}`;
+				const caption = `*${meme.title}*\n\n👤 By: ${meme.author}\n👍 ${meme.stats.upvotes} | 👎 ${meme.stats.downvotes} | 💬 ${meme.stats.comments}\n\n#${meme.hashtags.join(" #")}`;
 
 				const buttons = {
 					reply_markup: {
@@ -71,16 +64,7 @@ module.exports = {
 					},
 				};
 
-				if (meme.mediaType === 0) {
-					await m.edit(
-						{
-							type: "photo",
-							media: meme.media,
-							caption,
-						},
-						buttons
-					);
-				} else if (meme.mediaType === 1) {
+				if (meme.type === "video") {
 					await m.edit(
 						{
 							type: "video",
@@ -89,8 +73,17 @@ module.exports = {
 						},
 						buttons
 					);
+				} else if (meme.media) {
+					await m.edit(
+						{
+							type: "photo",
+							media: meme.media,
+							caption,
+						},
+						buttons
+					);
 				} else {
-					await m.edit(caption + `\n\n🔗 ${meme.media}`);
+					await m.edit(caption);
 				}
 			} catch (e) {
 				console.error(e);

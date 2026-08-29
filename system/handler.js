@@ -1,6 +1,4 @@
 const fs = require("fs");
-const cron = require("node-cron");
-const uploader = require("@library/uploader");
 const api = require("./api");
 const Color = require("./color");
 const func = require("@system/functions");
@@ -54,40 +52,6 @@ module.exports = async (client, m) => {
 			users.limit = parseInt(process.env.LIMIT);
 		}
 
-		if (!global.dailyResetScheduled) {
-			cron.schedule(
-				"00 00 * * *",
-				() => {
-					try {
-						setting.lastreset = Date.now();
-						const defaultLimit = parseInt(process.env.LIMIT);
-
-						Object.values(global.db.users).forEach((user) => {
-							if (user.limit < defaultLimit && !user.premium) {
-								user.limit = defaultLimit;
-							}
-						});
-
-						Object.values(global.db.stats).forEach((stat) => {
-							if (stat && typeof stat === "object") {
-								stat.today = 0;
-							}
-						});
-
-						console.log(
-							Color.cyanBright +
-								"All users limit successfully reseted. . ." +
-								Color.reset
-						);
-					} catch (error) {
-						console.error("Daily reset error:", error);
-					}
-				},
-				{ scheduled: true, timezone: process.env.TZ }
-			);
-			global.dailyResetScheduled = true;
-		}
-
 		if (m.isGroup) {
 			groupSet.activity = new Date() * 1;
 		}
@@ -116,7 +80,6 @@ module.exports = async (client, m) => {
 			setting,
 			others,
 			plugins,
-			uploader,
 			isPrems,
 			groupSet,
 		};

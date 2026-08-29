@@ -1,3 +1,4 @@
+const ytdlp = require("../../system/scrapers/ytdlp");
 const yts = require("yt-search");
 const axios = require("axios");
 const NodeID3 = require("node-id3");
@@ -7,7 +8,7 @@ module.exports = {
 	category: "downloader",
 	command: /^(ytmp3|play)$/i,
 	desc: "Downloads audio from YouTube with full metadata.",
-	run: async (m, { func, client, api }) => {
+	run: async (m, { func, client }) => {
 		if (!m.text)
 			return m.reply("Please provide a YouTube URL or search query.");
 
@@ -17,7 +18,7 @@ module.exports = {
 			let videoInfo;
 			if (func.isUrl(m.text)) {
 				const videoIdMatch = m.text.match(
-					/(?:v=|\/)([0-9A-Za-z_-]{11}).*/
+					/(?:v=|\/)([0-9A-Za-z_-]{11})/
 				);
 				if (!videoIdMatch) return m.reply("Invalid YouTube URL.");
 				videoInfo = await yts({ videoId: videoIdMatch[1] });
@@ -27,35 +28,29 @@ module.exports = {
 				videoInfo = search.videos[0];
 			}
 
-			const { data: apiData } = await axios.get(
-				api("yosh", "/api/d/youtube", {
-					url: videoInfo.url,
-					type: "mp3",
-				})
-			);
-			if (!apiData.result?.url)
-				throw new Error("Failed to get download link from API.");
+			const dl = await ytdlp.download(videoInfo.url, "audio");
 
-			const [audioBuffer, thumbnailBuffer] = await Promise.all([
-				axios
-					.get(apiData.result.url, { responseType: "arraybuffer" })
-					.then((res) => res.data),
-				axios
+			let thumbnailBuffer = null;
+			if (videoInfo.thumbnail) {
+				thumbnailBuffer = await axios
 					.get(videoInfo.thumbnail, { responseType: "arraybuffer" })
-					.then((res) => res.data),
-			]);
+					.then((res) => res.data)
+					.catch(() => null);
+			}
 
 			const tags = {
 				title: videoInfo.title,
-				artist: videoInfo.author.name,
+				artist: videoInfo.author?.name || "YouTube",
 				album: "YouTube",
-				APIC: thumbnailBuffer,
-				comment: { text: `Downloaded by ${client.botInfo.first_name}` },
+				...(thumbnailBuffer ? { APIC: thumbnailBuffer } : {}),
+				comment: {
+					text: `Downloaded by ${client.botInfo?.first_name || "Bot"}`,
+				},
 			};
-			const taggedBuffer = NodeID3.write(tags, audioBuffer);
+			const taggedBuffer = NodeID3.write(tags, dl.buffer);
 
-			const caption = `*${videoInfo.title}*\n› _By: ${videoInfo.author.name}_`;
-			const fileName = `${videoInfo.title}.mp3`;
+			const caption = `*${videoInfo.title}*\n› _By: ${videoInfo.author?.name || "-"}_`;
+			const fileName = `${videoInfo.title || "audio"}.mp3`;
 
 			await m.sendMedia(m.chat, taggedBuffer, {
 				type: "audio",

@@ -1,55 +1,41 @@
+const fb = require("../../system/scrapers/facebook");
+
 module.exports = {
 	help: ["facebook"],
 	category: "downloader",
 	command: /^f(ace(book(dl)?|dl)|b(dl)?)$/i,
-	desc: "Download media from facebook.",
-	run: async (m, { func, api }) => {
+	desc: "Download media from Facebook.",
+	run: async (m, { func }) => {
 		if (!m.text || !func.isUrl(m.text))
 			return m.reply(func.example(m.prefix, m.command, "link"));
 
 		const loadingMsg = await m.reply(mess.wait);
 
 		try {
-			const data = await func.fetchJson(
-				api("yosh", "/api/d/facebook", { url: m.text })
-			);
-			if (!data.status) return m.reply(mess.wrong);
+			const data = await fb.download(m.text.trim());
 
-			let caption = `› *${data.result.type === "video" ? "Video" : "Post"} Facebook.*\n`;
-			caption += `› *Title:* ${data.result.title || "Facebook"}\n`;
-			caption += `› *Source:* ${data.result.url}\n`;
-			if (data.result.externalUrl)
-				caption += `› *External URL:* ${data.result.externalUrl}\n`;
-
-			if (data.result.comments?.length > 0) {
-				caption += "\n— *Top Comments:*\n";
-				for (const comment of data.result.comments.slice(0, 3)) {
-					if (comment.text?.trim())
-						caption += `› *${comment.author.name}:* ${comment.text}\n`;
-				}
-			}
-
-			if (data.result.type === "image" && data.result.image?.length > 0) {
-				for (let i = 0; i < data.result.image.length; i++) {
-					await m.sendMedia(m.chat, data.result.image[i], {
-						caption: i === 0 ? caption.trim() : "",
-					});
-					await func.delay(1500);
-				}
-			} else if (
-				data.result.type === "video" &&
-				(data.result.hd || data.result.sd)
-			) {
-				const videoUrl = data.result.hd || data.result.sd;
-				const quality = data.result.hd ? "HD" : "SD";
-				await m.sendMedia(m.chat, videoUrl, {
+			if (data.type === "video" && data.video) {
+				const quality = data.hd ? "HD" : "SD";
+				const caption = `› *Quality:* ${quality}\n› *Title:* ${data.title || "Facebook Video"}`;
+				await m.sendMedia(m.chat, data.video, {
 					type: "video",
-					caption: `› *Quality:* ${quality}\n${caption}`,
+					caption,
 				});
+			} else if (data.type === "image" && data.images?.length > 0) {
+				for (let i = 0; i < data.images.length; i++) {
+					await m.sendMedia(m.chat, data.images[i], {
+						type: "photo",
+						caption:
+							i === 0 ? `› *Title:* ${data.title}` : undefined,
+					});
+					if (i < data.images.length - 1) await func.delay(1500);
+				}
+			} else {
+				throw new Error("No media found in Facebook URL.");
 			}
 		} catch (e) {
 			console.error(e);
-			return m.reply(mess.eror);
+			return m.reply(e.message || mess.error);
 		} finally {
 			m.delete(loadingMsg);
 		}

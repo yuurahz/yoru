@@ -1,13 +1,13 @@
 <div align="center">
     <h1>YORU</h1>
     <a href="https://github.com/yuurahz/yoru">
-        <img src="https://files.catbox.moe/x2iv5t.jpg" alt="Yoru"/>
+        <img src="https://files.catbox.moe/x2iv5t.jpg" alt="Yoru" width="600"/>
     </a>
 </div>
 
 <div align="center">
 
-<h3>Bot Telegram yang Ringan, Kuat, dan Skalabel</h3>
+<h3>Kerangka Kerja Bot Telegram yang Ringan, Kuat, dan Skalabel</h3>
 
 [![Community](https://img.shields.io/badge/Telegram-Community-Blue?style=for-the-badge&logo=telegram)](https://t.me/yoshida_team)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
@@ -20,58 +20,47 @@
 ---
 
 > [!NOTE]
-> **Yoru** adalah kerangka kerja bot Telegram modern yang dirancang untuk pengembang yang membutuhkan fondasi yang kuat untuk membangun bot yang kaya fitur. Baik Anda membuat bot utilitas sederhana atau platform multi-layanan yang kompleks, Yoru menyediakan arsitektur dan alat untuk menskala secara efisien dan dioptimalkan untuk kinerja yang ringan.
+> **Yoru** adalah kerangka kerja bot Telegram modern dan modular berbasis Node.js dan [Telegraf](https://telegraf.js.org/). Dirancang dengan arsitektur _clean decoupling_, bebas dari dependensi berat/bloatware, serta dilengkapi engine scraper mandiri untuk berbagai platform media sosial tanpa ketergantungan pada langganan REST API luar yang rentan mati.
 
 ---
 
-## Daftar Isi
+## ⚡ Fitur & Keunggulan Utama
 
-- [Mengapa Memilih Yoru?](#why-choose-yoru)
-- [Persyaratan](#requirements)
-- [Memulai](#getting-started)
-- [Konfigurasi](#configuration)
-- [Menjalankan Bot](#️running-the-bot)
-- [Instalasi via Docker](#installation-via-docker)
-- [Pengembangan Plugin](#plugin-development)
-- [Konfigurasi PM2](#pm2-configuration)
-- [Berkontribusi](#contributing)
-- [Penyelesaian Masalah (Troubleshooting)](#troubleshooting)
-- [Lisensi](#license)
-
----
-
-## Mengapa Memilih Yoru?
-
-- **Gratis & Sumber Terbuka:** Sepenuhnya gratis untuk penggunaan pribadi dan komersial di bawah Lisensi MIT.
-- **Arsitektur Modular:** Perluas fungsionalitas dengan mudah menggunakan sistem plugin yang sederhana (plug-and-play).
-- **Cepat & Stabil:** Didukung oleh [Telegraf](https://telegraf.js.org/), salah satu pustaka bot Telegram paling populer dan andal.
-- **Penyimpanan Hibrida:** Pilih antara penyimpanan berbasis file JSON sederhana atau database MongoDB yang kuat untuk skalabilitas.
-- **Peta Jalan Aktif (Active Roadmap):**
-    - [x] **Penanganan Kesalahan yang Kuat (Robust Error Handling):** Sistem yang lebih tangguh untuk menangani kesalahan dengan anggun dan menjaga koneksi tetap stabil.
-    - [ ] **Penyebaran yang Mudah (Easy Deployment):** Proses yang disederhanakan untuk hosting di berbagai platform.
+- **Arsitektur Terpisah (Decoupled)**: Logika parsing & scraper diisolasi penuh di [system/scrapers/](file:///root/yoru/system/scrapers), menjaga plugin controller tetap bersih, cepat, dan mudah diuji.
+- **Media & Social Downloader Mandiri**:
+    - **YouTube**: Download MP3 kualitas tinggi (dengan ID3 thumbnail tagging) dan MP4 menggunakan binary lokal `yt-dlp`.
+    - **Spotify**: Pencarian lagu & download MP3 langsung (TOTP Auth + SpotiDown).
+    - **TikTok**: Download video HD tanpa watermark, album slide foto, dan audio MP3.
+    - **Instagram**: Download video Reels, Post, dan Carousel album publik.
+    - **Facebook**: Download video Watch/Reels Facebook kualitas HD/SD.
+    - **MediaFire & Google Drive**: Generator direct link dan pengunduh file langsung.
+    - **CapCut & Threads**: Pengunduh video template tanpa watermark dan postingan Threads.
+    - **Lirik Lagu**: Pencarian lirik tersinkronisasi (LRC) dan teks via LRCLIB.
+    - **Pinterest**: Pencarian gambar HD & multi-download.
+- **Game Interaktif dengan Minimax AI**:
+    - **Catur (Chess)**: Mode solo vs Bot AI Minimax & multiplayer dengan papan visual FEN dinamis.
+    - **Tic-Tac-Toe**: Mode solo vs Bot AI Minimax & multiplayer menggunakan tombol keyboard inline.
+- **Multi-Database Provider**: Pilihan penyimpanan Local JSON, MongoDB, atau Supabase (PostgreSQL) hanya melalui pengaturan satu baris di `.env`.
+- **Hot-Reloading Plugin**: File watcher otomatis memperbarui kode plugin tanpa perlu me-restart proses bot.
 
 ---
 
-## Persyaratan
+## 📋 Persyaratan Sistem
 
 ### Perangkat Lunak (Software)
 
-- **NodeJS:** Versi `16.x` atau lebih tinggi. (Direkomendasikan `20.x`)
-- **Git:** Untuk mengkloning repositori.
+- **NodeJS**: Versi `20.x` atau lebih tinggi.
+- **yt-dlp**: Terpasang pada server/sistem (`which yt-dlp`).
+- **Git**: Untuk mengkloning repositori.
 
-### Perangkat Keras (Minimum Rekomendasi)
+### Rekomendasi Perangkat Keras
 
-- **vCPU:** 1 Core
-- **RAM:** 500 MB
-
-### Layanan yang Direkomendasikan
-
-- **Hosting:** [Hostdata (NAT VPS)](https://hostdata.id/nat-vps-usa/), [Optiklink](https://optiklink.com/), [VPS](https://www.orangevps.com/), [RDPWin](https://www.rdpwin.com/rdpbot.php)
-- **Database:** [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) untuk database cloud gratis.
+- **vCPU**: 1 Core
+- **RAM**: 512 MB+
 
 ---
 
-## Memulai
+## 🚀 Memulai
 
 ### 1. Kloning & Instalasi
 
@@ -82,233 +71,102 @@ git clone https://github.com/yuurahz/yoru.git
 # Masuk ke direktori proyek
 cd yoru
 
-# Instal semua dependensi yang diperlukan
+# Instal semua dependensi
 npm install
 ```
 
-### 2. Konfigurasi Lingkungan
+### 2. Konfigurasi Lingkungan (.env)
 
-Salin contoh file `.env` untuk membuat file konfigurasi Anda sendiri.
+Salin contoh file `.env`:
 
 ```bash
 cp .env.example .env
 ```
 
-Selanjutnya, buka file `.env` dan sesuaikan nilainya sesuai kebutuhan.
+Buka file `.env` dan sesuaikan nilainya:
+
+| Variabel         | Deskripsi                                                            | Contoh / Default |
+| :--------------- | :------------------------------------------------------------------- | :--------------- |
+| `TOKEN_BOT`      | Token unik bot dari [@BotFather](https://t.me/BotFather)             | `7067266575:...` |
+| `OWNER_ID`       | ID akun Telegram Owner dari [@userinfobot](https://t.me/userinfobot) | `5494920186`     |
+| `TZ`             | Zona waktu server                                                    | `Asia/Jakarta`   |
+| `LIMIT`          | Batas limit command harian per user                                  | `50`             |
+| `DATABASE_STATE` | Provider database (`json`, `mongo`, `supabase`)                      | `json`           |
+| `DATABASE_NAME`  | Nama file database JSON atau nama DB Mongo                           | `mydb`           |
+| `MONGO_URL`      | URI koneksi MongoDB (jika menggunakan MongoDB)                       | `mongodb://...`  |
 
 ---
 
-## Konfigurasi
-
-Edit file `.env` yang baru saja Anda buat:
-
-| Variabel         | Deskripsi                                                      | Contoh Nilai   |
-| :--------------- | :------------------------------------------------------------- | :------------- |
-| `TOKEN_BOT`      | Token bot unik Anda dari [@BotFather](https://t.me/BotFather). | -              |
-| `OWNER_ID`       | ID akun yang akan digunakan sebagai pemilik (owner).           | -              |
-| `TZ`             | Zona waktu lokal server Anda.                                  | `Asia/Jakarta` |
-| `LIMIT`          | Batas penggunaan perintah harian per pengguna.                 | `50`           |
-| `DATABASE_STATE` | Pilih `json` untuk file lokal atau `mongodb` untuk database.   | `json`         |
-| `DATABASE_NAME`  | Nama database Anda (untuk MongoDB).                            | `yoru_db`      |
-| `MONGO_URL`      | String koneksi MongoDB Anda (jika menggunakan `mongodb`).      | -              |
-
----
-
-## Menjalankan Bot
-
-Anda dapat menjalankan bot dalam beberapa mode berbeda:
-
-- **Mode Produksi:**
-    ```bash
-    npm start
-    ```
-- **Mode Pengembangan (dengan pemuatan ulang otomatis saat ada perubahan file):**
-    ```bash
-    npm run dev
-    ```
-- **Menggunakan PM2 (untuk menjaga bot tetap online):**
-    ```bash
-    npm run pm2
-    ```
-
----
-
-## Instalasi via Docker
-
-Untuk pengaturan yang mudah dan terisolasi, Anda dapat menggunakan Docker.
+## 🎮 Menjalankan Bot
 
 ```bash
-# Perbarui paket dan instal dependensi
-sudo apt update -y && sudo apt install curl git -y
+# Mode Development (auto-reload saat file diubah)
+npm run dev
 
-# Instal Docker
-curl -fsSL https://get.docker.com | bash
+# Mode Produksi Standar
+npm start
 
-# Kloning repositori
-git clone https://github.com/yuurahz/yoru
-
-# Masuk ke direktori
-cd yoru
-
-# (PENTING) Buat dan edit file .env Anda sebelum membangun image
-# cp .env.example .env
-# nano .env
-
-# Bangun image Docker
-docker build -t yoru-bot .
-
-# Jalankan kontainer dalam mode terlepas (detached) dan atur agar selalu restart
-docker run -d --name yoru --restart always yoru-bot
-
-# Lihat log bot secara real-time
-docker logs -f yoru
-```
-
-Untuk menghentikan kontainer:
-
-```bash
-docker stop yoru
+# Mode Background PM2
+npm run pm2
 ```
 
 ---
 
-## Pengembangan Plugin
+## 🧩 Arsitektur Plugin & Scraper
 
-Yoru menggunakan sistem plugin yang fleksibel dan mudah diperluas.
+### 1. Scraper Layer (`system/scrapers/`)
 
-#### Contoh Plugin Dasar
-
-Ini adalah plugin `ping` sederhana untuk memeriksa latensi bot.
+Seluruh logika scraping & pengambilan data diisolasi ke dalam modul mandiri:
 
 ```javascript
-// file: plugins/tools/ping.js
+const { spotify, ytdlp, tiktok } = require("@scrapers");
+
+// Contoh: Pencarian lagu Spotify
+const tracks = await spotify.search("yoasobi idol");
+```
+
+### 2. Plugin Controller Layer (`plugins/`)
+
+Plugin murni hanya menangani interaksi pengguna dan pengiriman pesan:
+
+```javascript
+const { spotify } = require("@scrapers");
+
 module.exports = {
-	// Metadata Plugin
-	help: ["ping"],
-	category: "tools",
-	command: "ping",
-
-	// Logika utama plugin
-	run: async (m, { client }) => {
-		const start = Date.now();
-		const msg = await m.reply("Pinging...");
-		const latency = Date.now() - start;
-
-		await client.telegram.editMessageText(
-			m.chat,
-			msg.message_id,
-			null,
-			`🏓 Pong!\n*Latensi:* ${latency} ms`,
-			{ parse_mode: "Markdown" }
-		);
+	help: ["spotify", "song"],
+	category: "downloader",
+	command: /^(spotify|song)$/i,
+	desc: "Cari dan download lagu dari Spotify.",
+	run: async (m, { func }) => {
+		if (!m.text) return m.reply("Masukkan judul lagu atau URL.");
+		const data = await spotify.download(m.text);
+		await m.sendMedia(m.chat, data.downloadUrl, { type: "audio" });
 	},
-
-	// Izin dan properti Plugin
-	group: true, // Berfungsi di grup
-	admin: false, // Tidak memerlukan admin
-	limit: 1, // Mengkonsumsi 1 batas penggunaan (bisa berupa Angka atau Boolean)
-	premium: false, // Bukan hanya untuk premium
-	botAdmin: false, // Bot tidak perlu menjadi admin
-	owner: false, // Bukan hanya untuk pemilik
-};
-```
-
-#### Contoh Penangan Acara (Event Handler)
-
-Plugin juga dapat merespons acara (events) alih-alih perintah, seperti membalas pesan tertentu.
-
-```javascript
-// file: plugins/events/auto-reply.js
-module.exports = {
-	// Fungsi 'before' berjalan di setiap pesan masuk
-	before: async (m, { client }) => {
-		if (m.body?.toLowerCase().includes("hello yoru")) {
-			await m.reply("👋 Halo!");
-		}
-
-		// Selalu kembalikan nilai boolean
-		return true;
-	},
+	limit: 1,
 };
 ```
 
 ---
 
-## Konfigurasi PM2
+## 📜 Ringkasan Perintah (Commands)
 
-Jika Anda menjalankan bot menggunakan `npm run pm2`, Anda dapat menyesuaikan konfigurasinya di file `ecosystem.config.js`.
-
-```javascript
-module.exports = {
-	apps: [
-		{
-			name: "yoru",
-			script: "index.js",
-			exec_mode: "fork",
-			instances: 1,
-			max_memory_restart: "300M",
-			watch: false, // Atur ke true untuk memulai ulang secara otomatis saat ada perubahan file
-		},
-	],
-};
-```
+| Kategori             | Perintah                                                                                          | Deskripsi                                           |
+| :------------------- | :------------------------------------------------------------------------------------------------ | :-------------------------------------------------- |
+| **Downloader**       | `/play`, `/ytmp3`, `/ytmp4`, `/spotify`, `/tiktok`, `/ig`, `/fb`, `/mf`, `/gd`, `/cc`, `/threads` | Pengunduh media, musik, & video                     |
+| **Internet & Tools** | `/pinterest`, `/meme`, `/yts`, `/lyrics`, `/fetch`                                                | Pencarian web, lirik lagu, meme, & HTTP cURL client |
+| **Games**            | `/chess`, `/tictactoe`                                                                            | Game catur & tic-tac-toe vs Bot AI / Teman          |
+| **Group Admin**      | `/setwelcome`, `/setleft`, `/kick`, `/ban`, `/mute`, `/warn`                                      | Sambutan otomatis & moderasi grup                   |
+| **User & RPG**       | `/register`, `/unregister`, `/profile`, `/levelup`                                                | Pendaftaran user & sistem RPG level/limit           |
+| **Owner**            | `>`, `$`, `/enable`, `/disable`, `/setmenu`, `/setmsg`                                            | Evaluator runtime, eksekusi terminal, setting bot   |
 
 ---
 
-## Berkontribusi
+## 📄 Lisensi
 
-Kontribusi Anda sangat dihargai! Jika Anda ingin membantu meningkatkan Yoru, silakan ikuti langkah-langkah berikut:
-
-1.  **Fork** repositori.
-2.  Buat cabang fitur baru (`git checkout -b feature/FiturBaru`).
-3.  Buat perubahan Anda dan **commit** (`git commit -m "Tambahkan FiturBaru"`).
-4.  **Push** ke cabang Anda (`git push origin feature/FiturBaru`).
-5.  Buka **Pull Request**.
-
----
-
-## Penyelesaian Masalah (Troubleshooting)
-
-<details>
-<summary><strong>Bot tidak merespons</strong></summary>
-
-1.  **Periksa Token Bot:** Pastikan token di file `.env` Anda benar dan tidak ada spasi ekstra.
-2.  **Verifikasi Konektivitas Internet:** Coba `ping google.com` dari server Anda.
-3.  **Periksa Log:** Jalankan bot dalam mode `dev` (`npm run dev`) atau periksa log Docker/PM2 untuk pesan kesalahan.
-4.  **Batas Tingkat (Rate Limits):** Pastikan bot tidak mengirim terlalu banyak pesan dalam waktu singkat, yang dapat menyebabkan Telegram menerapkan batas tingkat (rate-limited).
-</details>
-
-<details>
-<summary><strong>Masalah koneksi database</strong></summary>
-
-1.  **Verifikasi URL MongoDB:** Periksa kembali apakah URL dan kredensial (nama pengguna/kata sandi) sudah benar.
-2.  **Server Database Berjalan:** Pastikan server database Anda aktif.
-3.  **Whitelist IP:** Jika menggunakan MongoDB Atlas, pastikan alamat IP server Anda telah di-whitelist.
-4.  **Firewall:** Periksa aturan firewall yang mungkin memblokir koneksi keluar ke port database.
-</details>
-
-<details>
-<summary><strong>Plugin tidak memuat</strong></summary>
-
-1.  **Periksa Sintaks:** Pastikan tidak ada kesalahan sintaks di file plugin Anda.
-2.  **Struktur Plugin:** Verifikasi bahwa struktur `module.exports` sudah benar.
-3.  **Cari Kesalahan:** Periksa konsol saat startup untuk pesan kesalahan apa pun yang terkait dengan pemuatan plugin.
-4.  **Lokasi File:** Pastikan file plugin berada di dalam direktori `plugins` yang benar.
-</details>
-
----
-
-## Lisensi
-
-Proyek ini dilisensikan di bawah **Lisensi MIT**. Gratis untuk penggunaan pribadi & komersial.
+Proyek ini dilisensikan di bawah **Lisensi MIT**. Bebas untuk penggunaan pribadi maupun komersial.
 
 <div align="center">
 
----
-
-**Butuh Bantuan?** Buka [Issue](https://github.com/yuurahz/yoru/issues) atau bergabung dalam diskusi!  
-**⭐ Bintang (Star) repo ini jika Anda menyukainya! ⭐**
-
-_Dibangun dengan ❤️ untuk komunitas Telegram_
+_Dibuat dengan ❤️ untuk komunitas Telegram_
 
 </div>

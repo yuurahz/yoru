@@ -1,4 +1,3 @@
-const moment = require("moment-timezone");
 const levelling = require("@system/levelling");
 
 function makeProgressBar(value, max, length = 20) {
@@ -31,7 +30,9 @@ module.exports = {
 
 		const formatDate = (ts) =>
 			ts
-				? moment(ts).tz(process.env.TZ).format("DD/MM/YYYY HH:mm:ss")
+				? new Date(ts).toLocaleString("en-GB", {
+						timeZone: process.env.TZ || "Asia/Jakarta",
+					})
 				: "-";
 
 		const multiplier = process.env.LEVEL_MULTIPLIER;

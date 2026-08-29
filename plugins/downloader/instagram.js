@@ -1,42 +1,39 @@
+const ig = require("../../system/scrapers/instagram");
+
 module.exports = {
 	help: ["instagram"],
 	category: "downloader",
 	command: /^i(nsta(gram(dl)?|dl)|g(dl)?)$/i,
 	desc: "Downloads Instagram media.",
-	run: async (m, { func, api }) => {
+	run: async (m, { func }) => {
 		if (!m.text || !func.isUrl(m.text))
 			return m.reply("Please provide a valid Instagram URL.");
 
 		const loadingMsg = await m.reply(mess.wait);
 
 		try {
-			const apiResponse = await func.fetchJson(
-				api("gratis", "/downloader/instagram", { url: m.text })
-			);
-			if (!apiResponse.status)
+			const res = await ig.download(m.text.trim());
+			const mediaList = res?.media || [];
+
+			if (!mediaList.length) {
 				throw new Error(
-					apiResponse.message || "Failed to fetch content from API."
+					"No downloadable media found. Ensure the post is public."
 				);
+			}
 
-			const result = apiResponse.result;
-			if (!result.urls?.length)
-				throw new Error("No media found in the provided URL.");
+			const caption = res.caption
+				? `› *Caption:* ${res.caption.slice(0, 200)}...`
+				: `› *Source:* ${m.text.trim()}`;
 
-			const meta = result.meta;
-			const caption = [
-				`› Author: @${meta?.username || ""}`,
-				`› Likes: ${func.formatNumber(meta?.like_count || 0)}`,
-				`\n${meta?.title || ""}`,
-			].join("\n");
-
-			for (let i = 0; i < result.urls.length; i++) {
-				const media = result.urls[i];
-				await m.sendMedia(m.chat, media.url, {
-					type: media.type === "mp4" ? "video" : "photo",
+			for (let i = 0; i < mediaList.length; i++) {
+				const item = mediaList[i];
+				const isVideo =
+					item.type === "video" || item.url?.includes(".mp4");
+				await m.sendMedia(m.chat, item.url, {
+					type: isVideo ? "video" : "photo",
 					caption: i === 0 ? caption : undefined,
-					parse_mode: "HTML",
 				});
-				await func.delay(1500);
+				if (i < mediaList.length - 1) await func.delay(1500);
 			}
 		} catch (e) {
 			console.error(e);

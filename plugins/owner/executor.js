@@ -21,17 +21,7 @@ function chunkText(str, max = 3500) {
 module.exports = {
 	before: async (
 		m,
-		{
-			api,
-			client,
-			func,
-			users,
-			setting,
-			plugins,
-			uploader,
-			isPrems,
-			groupSet,
-		}
+		{ api, client, func, users, setting, plugins, isPrems, groupSet }
 	) => {
 		if (m.body.startsWith(">")) {
 			if (!m.isOwner) {
