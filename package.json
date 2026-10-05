@@ -31,7 +31,7 @@
     "chess.js": "^1.4.0",
     "dotenv": "^17.2.2",
     "module-alias": "^2.2.3",
-    "mongodb": "^6.18.0",
+    "mongodb": "^7.7.0",
     "node-id3": "^0.2.9",
     "telegraf": "^4.16.3",
     "yt-search": "^2.13.1"
